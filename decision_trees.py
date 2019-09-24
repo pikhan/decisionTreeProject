@@ -74,7 +74,7 @@ def DT_test_binary(X = None, Y = None, DT = None):
             int accuracy = 0;
             for labels in Y:
                 if Y[labels] == DT.label:
-                    accuracy++
+                    accuracy+1
             return (accuracy/range(Y))
         else:
             Xleft = np.array
