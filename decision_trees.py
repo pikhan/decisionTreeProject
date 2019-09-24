@@ -50,6 +50,9 @@ def entropy(X = None, Y = None):
 
 def information_gain():
 
+#This function outputs the depth of the given node
+def depth(root, node):
+
 def DT_train_binary(X = None, Y = None, max_depth = -2):
     if max_depth <= -2:
         print('\n Please enter a correct max_depth integer \n')
