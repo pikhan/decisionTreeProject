@@ -61,6 +61,10 @@ def DT_train_binary(X = None, Y = None, max_depth = -2):
 
 
 def DT_test_binary(X = None, Y = None, DT = None):
+    if X is None:
+        print('\n The X 2D Array is empty. \n')
+    if Y is None:
+        print('\n The Y 2D Array is empty. \n')
 
 def DT_train_binary_best(X_train = None, Y_train = None, X_val = None, Y_val = None):
 
