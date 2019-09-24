@@ -18,15 +18,25 @@ import numpy as np
 #upon the return of DT_train_binary save for feature_split as the rest are
 #only needed during training.
 
-class Node(object):
+class BinaryNode(object):
     def __init__(self):
         self.left_child = None
         self.right_child = None
         self.samples = None
         self.feature_list = None
         self.feature_split = None
-        self.label = None
+        self.label_prediction = None
 
+class RealNode(object):
+    def __init__(self):
+        self.left_child = None
+        self.right_child = None
+        self.samples = None
+        self.feature_list = None
+        self.feature_split = None
+        self.feature_split_value = None
+        self.feature_split_sign = None #either "<" or "<="
+        self.label_prediction = None
 
 
 #This is a modular function that will calculate the sum of a list of arguments.
@@ -73,7 +83,7 @@ def DT_test_binary(X = None, Y = None, DT = None):
         if DT.left_child is None and DT.right_child is None:
             int accuracy = 0;
             for labels in Y:
-                if Y[labels] == DT.label:
+                if Y[labels] == DT.label_prediction:
                     accuracy+1
             return (accuracy/range(Y))
         else:
@@ -137,19 +147,27 @@ def DT_test_real(X = None, Y = None, DT = None):
         if DT.left_child is None and DT.right_child is None:
             int accuracy = 0;
             for labels in Y:
-                if Y[labels] == DT.label:
+                if Y[labels] == DT.label_prediction:
                     accuracy+1
             return (accuracy/range(Y))
-        else: #need to change for reals
+        else: 
             Xleft = np.array
             Yleft = np.array
             Xright = np.array
             Yright = np.array
             for sample in X:
-                if X[sample][DT.feature_split] == 0:
+                if DT.feature_split_sign == "<":
+                    if X[sample][DT.feature_split] >= DT.feature_split_value: #need to change for reals
+                        Xleft.add(X[sample])
+                        Yleft.add(Y[sample])
+                    else:
+                        Xright.add(X[sample])
+                        Yright.add(Y[sample])
+                else:
+                    if X[sample][DT.feature_split] > DT.feature_split_value: #need to change for reals
                     Xleft.add(X[sample])
                     Yleft.add(Y[sample])
-                else:
+                    else:
                     Xright.add(X[sample])
                     Yright.add(Y[sample])
 
