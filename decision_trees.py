@@ -12,7 +12,6 @@
 #upon the return of DT_train_binary save for feature_split as the rest are
 #only needed during training.
 
- #test commit number 2
 class Node(object):
     def __init__(self):
         self.left_child = None
@@ -22,13 +21,16 @@ class Node(object):
         self.feature_split = None
 
 #This is a modular function that will calculate the sum of a list of arguments.
-def sum(*X = None):
-    if X is None:
+def sum(*args):
+    if args is None:
         print('\n The sum array input is invalid \n')
     else:
-        sum = 0
-        i = 0
-        for
+        summer = 0
+        for arg in args:
+            summer = summer + arg
+        return summer
+
+
 def entropy(X = None, Y = None):
 
 def information_gain():
