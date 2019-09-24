@@ -2,6 +2,10 @@
 # CS 491: Project 1 - Decision Trees
 # Emily Hand - UNR
 
+#Numpy is imported for log functions
+
+import numpy as np
+
 #This class will form the basis for our tree. Clearly, we need to denote
 #left and right children of each node in the tree, but we also need to
 #keep track of which samples are "in" each node during the model's training
@@ -21,7 +25,7 @@ class Node(object):
         self.feature_split = None
 
 #This is a modular function that will calculate the sum of a list of arguments.
-def sum(*args):
+def sigma(*args):
     if args is None:
         print('\n The sum array input is invalid \n')
     else:
@@ -30,7 +34,7 @@ def sum(*args):
             summer = summer + arg
         return summer
 
-
+#This is a modular function that will calculate the entropy of the whole data set
 def entropy(X = None, Y = None):
 
 def information_gain():
