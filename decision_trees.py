@@ -31,7 +31,7 @@ class RealNode(object):
 
 def sigma(*args):
     if args is None:
-        print('\n The sum array input is invalid \n')
+        print('\n The sum input is invalid \n')
     else:
         summer = 0
         for arg in args:
@@ -56,7 +56,7 @@ def entropy(Y = None):
             print('\n Label Set has characters other than 0 or 1, please standardize notation. \n')
     prob_yes = count_yes/len(Y[0])
     prob_no = count_no/len(Y[0])
-    H = -1*sigma(prob_yes*np.log2(prob_yes),prob_no*np.log2(prob_no))
+    H = -1*sigma(prob_yes*np.log2(prob_yes), prob_no*np.log2(prob_no))
     return H
 
 def information_gain():
