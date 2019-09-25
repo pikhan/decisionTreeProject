@@ -23,7 +23,7 @@ class RealNode(object):
         self.parent = None #the parent node
         self.samples = None #a 1D integer array of training sample indices "in" the node
         self.feature_list = None #a 3D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
-        self.feature_split = None #an integer, the feature index f3or which we split on at the node
+        self.feature_split = None #an integer, the feature index for which we split on at the node
         self.feature_split_value = None #a double, the value for which we split the feature on
         self.feature_split_sign = None #a string, less or leq resp. corresponding to either "<" or "<=", for which we split the feature value with
         self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
@@ -82,6 +82,17 @@ def information_gain(DT = None, Y = None):
     proportionRight = len((DT.right_child).samples)/len(DT.samples)
     informationGain = H_current - proportionLeft*H_left - proportionRight*H_right #compute our information gain
     return informationGain
+
+
+
+#This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the binary case
+
+def best_split_binary(DT = None, Y = None):
+
+
+#This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the real case
+
+def best_split_real(DT = None, Y = None):
 
 def DT_train_binary(X = None, Y = None, max_depth = -2):
     if max_depth <= -2:
