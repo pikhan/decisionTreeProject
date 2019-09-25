@@ -42,10 +42,22 @@ def sigma(*args):
 
 #This is a modular function that will calculate the entropy of the whole data set
 
-def entropy(X = None, Y = None):
-    for i in range(len(X)):
-
-
+def entropy(Y = None):
+    if Y is None:
+        print('\n The label set input is None, please correct. \n')
+    count_yes = 0
+    count_no = 0
+    for i in range(len(Y[0])):
+        if Y[0][i] == 0:
+            count_no += 1
+        if Y[0][i] == 1:
+            count_yes += 1
+        else:
+            print('\n Label Set has characters other than 0 or 1, please standardize notation. \n')
+    prob_yes = count_yes/len(Y[0])
+    prob_no = count_no/len(Y[0])
+    H = -1*sigma(prob_yes*np.log2(prob_yes),prob_no*np.log2(prob_no))
+    return H
 
 def information_gain():
 
@@ -79,7 +91,7 @@ def DT_test_binary(X = None, Y = None, DT = None):
             Yleft = None                 #fixed
             Xright = None
             Yright = None
-            for sample in in range(len(X)):
+            for sample in range(len(X)):
                 if X[sample][DT.feature_split] == 0:
                     if Xleft or Yleft is None:
                         Xleft = np.vstack([X[sample]])
@@ -159,7 +171,7 @@ def DT_test_real(X = None, Y = None, DT = None):
             Yleft = None
             Xright = None               #fixed
             Yright = None
-            for sample in in range(len(X)):
+            for sample in range(len(X)):
                 if DT.feature_split_sign == "<":
                     if X[sample][DT.feature_split] >= DT.feature_split_value: 
                         if Xleft or Yleft is None:
