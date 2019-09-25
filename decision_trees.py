@@ -63,18 +63,16 @@ def entropy(Y = None):
 
 
 
-#This is a modular function that will compute the information gain between some current DT node and its children given the current node and the global Y 2D numpy array
+#This is a modular function that will compute the information gain between some current DT node and its children given the current node, the global Y 2D numpy array, and hypothetical left/right labels
 
-def information_gain(DT = None, Y = None):
-    currentLabels = np.zeros(shape=(len(DT.samples),1)) #A 0-filled np array having as many rows as the samples in DT and only 1 column to create a label subset
-    leftLabels = np.zeros(shape=(len((DT.left_child).samples),1))
-    rightLabels = np.zeros(shape=(len((DT.right_child).samples),1))
+def information_gain(DT = None, Y = None, leftLabels = None, rightLabels = None):
+    currentLabels = np.empty(shape=(len(DT.samples),1)) #A 0-filled np array having as many rows as the samples in DT and only 1 column to create a label subset
     for i in range(len((DT.parent).samples)):
         currentLabels[i][0] = Y[DT.samples[i]][0] #this creates our label subset from the global Y-label subset
-    for i in range(len((DT.left_child).samples)):
-        leftLabels[i][0] = Y[(DT.left_child).samples[i]][0]
-    for i in range(len((DT.right_child).samples)):
-        rightLabels[i][0] = Y[(DT.right_child).samples[i]][0]
+    #for i in range(len((DT.left_child).samples)):
+     #   leftLabels[i][0] = Y[(DT.left_child).samples[i]][0]
+    #for i in range(len((DT.right_child).samples)):
+    #    rightLabels[i][0] = Y[(DT.right_child).samples[i]][0]
     H_current = entropy(currentLabels) #we first compute our entropies
     H_left = entropy(leftLabels)
     H_right = entropy(rightLabels)
@@ -87,7 +85,20 @@ def information_gain(DT = None, Y = None):
 
 #This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the binary case
 
-def best_split_binary(DT = None, Y = None):
+def best_split_binary(DT = None, Y = None, X = None):
+    info_gain_list = [] #this is a list of information gain values
+    leftLabels = np.empty(shape=(len((DT.left_child).samples),1))
+    rightLabels = np.empty(shape=(len((DT.right_child).samples),1))
+    for i in range(len(DT.feature_list)):
+        for j in range(len(DT.samples)):
+            if X[j][i] == 0:
+
+    left_child = BinaryNode(None, None, DT, left_samples, new_feature_list, None, left_label_prediction)
+    right_child = BinaryNode(None, None, DT, right_samples, new_feature_list, None, right_label_prediction)
+    DT.left_child = left_child
+    DT.right_child = right_child
+
+
 
 
 #This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the real case
