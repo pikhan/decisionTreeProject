@@ -75,17 +75,25 @@ def DT_test_binary(X = None, Y = None, DT = None):
                     accuracy+=1
             return accuracy / len(Y[0])
         else:
-            #Xleft = np.array(None)
-            #Yleft = np.array(None)                 #known issue need to actually add stuff into the array
-            #Xright = np.array(None)
-            #Yright = np.array(None)
-            for sample in X:
+            Xleft = None
+            Yleft = None                 #fixed
+            Xright = None
+            Yright = None
+            for sample in in range(len(X)):
                 if X[sample][DT.feature_split] == 0:
-                    Xleft.add(X[sample])
-                    Yleft.add(Y[sample])
+                    if Xleft or Yleft is None:
+                        Xleft = np.vstack([X[sample]])
+                        Yleft = np.vstack([Y[sample]])
+                    else:
+                        Xleft = np.vstack([Xleft, X[sample]])
+                        Yleft = np.vstack([Yleft, Y[sample]])
                 else:
-                    Xright.add(X[sample])
-                    Yright.add(Y[sample])
+                    if Xright or Yright is None:
+                        Xright = np.vstack([X[sample]])
+                        Yright = np.vstack([Y[sample]])
+                    else:
+                        Xright = np.vstack([Xright, X[sample]])
+                        Yright = np.vstack([Yright, Y[sample]])
 
             return DT_test_binary(Xleft, Yleft, DT.left_child) + DT_test_binary(Xright, Yright, DT.right_child)
     else:
@@ -120,9 +128,15 @@ def DT_train_binary_best(X_train = None, Y_train = None, X_val = None, Y_val = N
 
 
 
-def DT_make_prediction(x = 0, DT = None):
-    if x == 0:
+def DT_make_prediction(x = None, DT = None): #assumes DT is binary (I believe this is correct)
+    if (DT.left_child is None) and (DT.right_child is None):
+        return DT.label_prediction
+    if x is None:
         print('\n Please enter a correct sample index. \n')
+    if x[DT.feature_split] == 0:
+        return DT_make_prediction(x, DT.left_child)
+    else:
+        return DT_make_prediction(x, DT.right_child)
 
 def DT_train_real(X = None, Y = None, max_depth = -2):
     if max_depth <= -2:
@@ -141,25 +155,41 @@ def DT_test_real(X = None, Y = None, DT = None):
                     accuracy+=1
             return accuracy/len(Y)
         else: 
-            Xleft = np.array
-            Yleft = np.array
-            Xright = np.array               #known issues, see above
-            Yright = np.array
-            for sample in X:
+            Xleft = None
+            Yleft = None
+            Xright = None               #fixed
+            Yright = None
+            for sample in in range(len(X)):
                 if DT.feature_split_sign == "<":
-                    if X[sample][DT.feature_split] >= DT.feature_split_value: #need to change for reals
-                        Xleft.add(X[sample])
-                        Yleft.add(Y[sample])
+                    if X[sample][DT.feature_split] >= DT.feature_split_value: 
+                        if Xleft or Yleft is None:
+                            Xleft = np.vstack([X[sample]])
+                            Yleft = np.vstack([Y[sample]])
+                        else:
+                            Xleft = np.vstack([Xleft, X[sample]])
+                            Yleft = np.vstack([Yleft, Y[sample]])
                     else:
-                        Xright.add(X[sample])
-                        Yright.add(Y[sample])
+                        if Xright or Yright is None:
+                            Xright = np.vstack([X[sample]])
+                            Yright = np.vstack([Y[sample]])
+                        else:
+                            Xright = np.vstack([Xright, X[sample]])
+                            Yright = np.vstack([Yright, Y[sample]])
                 else:
-                    if X[sample][DT.feature_split] > DT.feature_split_value: #need to change for reals
-                    Xleft.add(X[sample])
-                    Yleft.add(Y[sample])
+                    if X[sample][DT.feature_split] > DT.feature_split_value: 
+                        if Xleft or Yleft is None:
+                            Xleft = np.vstack([X[sample]])
+                            Yleft = np.vstack([Y[sample]])
+                        else:
+                            Xleft = np.vstack([Xleft, X[sample]])
+                            Yleft = np.vstack([Yleft, Y[sample]])
                     else:
-                    Xright.add(X[sample])
-                    Yright.add(Y[sample])
+                        if Xright or Yright is None:
+                            Xright = np.vstack([X[sample]])
+                            Yright = np.vstack([Y[sample]])
+                        else:
+                            Xright = np.vstack([Xright, X[sample]])
+                            Yright = np.vstack([Yright, Y[sample]])
 
             return DT_test_real(Xleft, Yleft, DT.left_child) + DT_test_real(Xright, Yright, DT.right_child)
 
