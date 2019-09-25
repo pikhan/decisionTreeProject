@@ -1,5 +1,60 @@
 \documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
 \begin{document}
+
+\begin{lstlisting}[language=Python, caption=Python example]
+    class BinaryNode(object):
+    def __init__(self):
+        self.left_child = None #the left child of the node, another node
+        self.right_child = None #the right child of the node, another node
+        self.samples = None #a 1D integer array of training sample indices "in" the node
+        self.feature_list = None #a 1D integer array of features we have not yet split upon on the branch
+        self.feature_split = None #an integer, the feature index for which we split on at the node
+        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
+
+class RealNode(object):
+    def __init__(self):
+        self.left_child = None #the left child of the node, another node
+        self.right_child = None #the right child of the node, another node
+        self.samples = None #a 1D integer array of training sample indices "in" the node
+        self.feature_list = None #a 3D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
+        self.feature_split = None #an integer, the feature index f3or which we split on at the node
+        self.feature_split_value = None #a double, the value for which we split the feature on
+        self.feature_split_sign = None #a string, less or leq resp. corresponding to either "<" or "<=", for which we split the feature value with
+        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
+\end{lstlisting}
+
     These classes will form the basis for our tree. Clearly, we need to denote
 left and right children of each node in the tree, but we also need to
 keep track of which samples are "in" each node during the model's training
