@@ -10,6 +10,7 @@ class BinaryNode(object):
     def __init__(self):
         self.left_child = None #the left child of the node, another node
         self.right_child = None #the right child of the node, another node
+        self.parent = None #the parent node
         self.samples = None #a 1D integer array of training sample indices "in" the node
         self.feature_list = None #a 1D integer array of features we have not yet split upon on the branch
         self.feature_split = None #an integer, the feature index for which we split on at the node
@@ -19,6 +20,7 @@ class RealNode(object):
     def __init__(self):
         self.left_child = None #the left child of the node, another node
         self.right_child = None #the right child of the node, another node
+        self.parent = None #the parent node
         self.samples = None #a 1D integer array of training sample indices "in" the node
         self.feature_list = None #a 3D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
         self.feature_split = None #an integer, the feature index f3or which we split on at the node
@@ -47,22 +49,33 @@ def entropy(Y = None):
         print('\n The label set input is None, please correct. \n')
     count_yes = 0
     count_no = 0
-    for i in range(len(Y[0])):
-        if Y[0][i] == 0:
+    for i in range(len(Y)):
+        if Y[i][0] == 0:
             count_no += 1
-        if Y[0][i] == 1:
+        if Y[i][0] == 1:
             count_yes += 1
         else:
             print('\n Label Set has characters other than 0 or 1, please standardize notation. \n')
     prob_yes = count_yes/len(Y[0])
     prob_no = count_no/len(Y[0])
-    H = -1*sigma(prob_yes*np.log2(prob_yes), prob_no*np.log2(prob_no))
+    H = -1*sigma(prob_yes*np.log2(prob_yes), prob_no*np.log2(prob_no)) #this is our total entropy
     return H
 
-def information_gain():
 
-#This function outputs the depth of the given node
-def depth(root, node):
+
+#This is a modular function that will compute the information gain between some current DT node and its parent
+
+def information_gain(DT = None, Y = None):
+    parentLabels = np.zeros(shape=(len((DT.parent).samples)),1)
+    leftLabels = np.zeros(shape=(len((DT.left_child).samples)),1)
+    rightLabels = np.zeros(shape=(len((DT.right_child).samples)),1)
+    for i in range(len((DT.parent).samples))
+        parentLabels[i][0]=Y[(DT.parent).samples[i]][0]
+    for i in range(len((DT.left_child).samples))
+        leftLabels[i][0]=Y[(DT.left_child).samples[i]][0]
+    for i in range(len((DT.right_child).samples))
+        rightLabels[i][0]=Y[(DT.right_child).samples[i]][0]
+    H = entropy(parentLabels)
 
 def DT_train_binary(X = None, Y = None, max_depth = -2):
     if max_depth <= -2:
