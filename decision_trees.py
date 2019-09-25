@@ -49,33 +49,39 @@ def entropy(Y = None):
         print('\n The label set input is None, please correct. \n')
     count_yes = 0
     count_no = 0
-    for i in range(len(Y)):
-        if Y[i][0] == 0:
+    for i in range(len(Y)): #len(Y) corresponds to the number of rows, i.e., samples in the label set
+        if Y[i][0] == 0: #if the i-th row at the 0-th column of the label set Y, that is, if the i-th sample's label is 0
             count_no += 1
         if Y[i][0] == 1:
             count_yes += 1
         else:
             print('\n Label Set has characters other than 0 or 1, please standardize notation. \n')
-    prob_yes = count_yes/len(Y[0])
-    prob_no = count_no/len(Y[0])
+    prob_yes = count_yes/len(Y)
+    prob_no = count_no/len(Y)
     H = -1*sigma(prob_yes*np.log2(prob_yes), prob_no*np.log2(prob_no)) #this is our total entropy
     return H
 
 
 
-#This is a modular function that will compute the information gain between some current DT node and its parent
+#This is a modular function that will compute the information gain between some current DT node and its children given the current node and the global Y 2D numpy array
 
 def information_gain(DT = None, Y = None):
-    parentLabels = np.zeros(shape=(len((DT.parent).samples)),1)
-    leftLabels = np.zeros(shape=(len((DT.left_child).samples)),1)
-    rightLabels = np.zeros(shape=(len((DT.right_child).samples)),1)
-    for i in range(len((DT.parent).samples))
-        parentLabels[i][0]=Y[(DT.parent).samples[i]][0]
-    for i in range(len((DT.left_child).samples))
-        leftLabels[i][0]=Y[(DT.left_child).samples[i]][0]
-    for i in range(len((DT.right_child).samples))
-        rightLabels[i][0]=Y[(DT.right_child).samples[i]][0]
-    H = entropy(parentLabels)
+    currentLabels = np.zeros(shape=(len(DT.samples),1)) #A 0-filled np array having as many rows as the samples in DT and only 1 column to create a label subset
+    leftLabels = np.zeros(shape=(len((DT.left_child).samples),1))
+    rightLabels = np.zeros(shape=(len((DT.right_child).samples),1))
+    for i in range(len((DT.parent).samples)):
+        currentLabels[i][0] = Y[DT.samples[i]][0] #this creates our label subset from the global Y-label subset
+    for i in range(len((DT.left_child).samples)):
+        leftLabels[i][0] = Y[(DT.left_child).samples[i]][0]
+    for i in range(len((DT.right_child).samples)):
+        rightLabels[i][0] = Y[(DT.right_child).samples[i]][0]
+    H_current = entropy(currentLabels) #we first compute our entropies
+    H_left = entropy(leftLabels)
+    H_right = entropy(rightLabels)
+    proportionLeft = len((DT.left_child).samples)/len(DT.samples) #add in the sizing coefficients in the formula for information gain
+    proportionRight = len((DT.right_child).samples)/len(DT.samples)
+    informationGain = H_current - proportionLeft*H_left - proportionRight*H_right #compute our information gain
+    return informationGain
 
 def DT_train_binary(X = None, Y = None, max_depth = -2):
     if max_depth <= -2:
