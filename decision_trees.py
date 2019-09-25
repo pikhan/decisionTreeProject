@@ -6,39 +6,25 @@
 
 import numpy as np
 
-
-
-#This class will form the basis for our tree. Clearly, we need to denote
-#left and right children of each node in the tree, but we also need to
-#keep track of which samples are "in" each node during the model's training
-#so that we can form output labels and see what is going on during the debugging
-#process. Further, we need to make sure during training we do not split on
-#the same feature twice so we will keep track of un-split features as well
-#as which feature we choose to split on. These properties will all be None
-#upon the return of DT_train_binary save for feature_split as the rest are
-#only needed during training. In addition to this, the two node classes
-#also have a label prediction. The real node class has some additional structure
-#as the feature list is now much larger and differentiated based on
-
 class BinaryNode(object):
     def __init__(self):
-        self.left_child = None
-        self.right_child = None
-        self.samples = None
-        self.feature_list = None
-        self.feature_split = None
-        self.label_prediction = None
+        self.left_child = None #the left child of the node, another node
+        self.right_child = None #the right child of the node, another node
+        self.samples = None #a 1D integer array of training sample indices "in" the node
+        self.feature_list = None #a 1D integer array of features we have not yet split upon on the branch
+        self.feature_split = None #an integer, the feature index for which we split on at the node
+        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
 
 class RealNode(object):
     def __init__(self):
-        self.left_child = None
-        self.right_child = None
-        self.samples = None
-        self.feature_list = None
-        self.feature_split = None #particular feature index
-        self.feature_split_value = None
-        self.feature_split_sign = None #either "<" or "<="
-        self.label_prediction = None
+        self.left_child = None #the left child of the node, another node
+        self.right_child = None #the right child of the node, another node
+        self.samples = None #a 1D integer array of training sample indices "in" the node
+        self.feature_list = None #a 3D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
+        self.feature_split = None #an integer, the feature index for which we split on at the node
+        self.feature_split_value = None #a double, the value for which we split the feature on
+        self.feature_split_sign = None #a string, less or leq resp. corresponding to either "<" or "<=", for which we split the feature value with
+        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
 
 
 #This is a modular function that will calculate the sum of a list of arguments.

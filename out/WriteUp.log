@@ -1,0 +1,188 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.3)  24 SEP 2019 19:47
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**WriteUp.tex
+(./WriteUp.tex
+LaTeX2e <2017-04-15>
+Babel <3.18> and hyphenation patterns for 3 language(s) loaded.
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+No file WriteUp.aux.
+\openout1 = `WriteUp.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+./WriteUp.tex:3: You can't use `macro parameter character #' in vertical mode.
+l.3     #
+         This class will form the basis for our tree. Clearly, we need to de...
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:4: You can't use `macro parameter character #' in horizontal mode
+.
+l.4 #
+     left and right children of each node in the tree, but we also need to
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:5: You can't use `macro parameter character #' in horizontal mode
+.
+l.5 #
+     keep track of which samples are "in" each node during the model's training
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:6: You can't use `macro parameter character #' in horizontal mode
+.
+l.6 #
+     so that we can form output labels and see what is going on during the d...
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:7: You can't use `macro parameter character #' in horizontal mode
+.
+l.7 #
+     process. Further, we need to make sure during training we do not split on
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:8: You can't use `macro parameter character #' in horizontal mode
+.
+l.8 #
+     the same feature twice so we will keep track of un-split features as well
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:9: You can't use `macro parameter character #' in horizontal mode
+.
+l.9 #
+     as which feature we choose to split on. These properties will all be None
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:10: You can't use `macro parameter character #' in horizontal mod
+e.
+l.10 #
+      upon the return of DT_train_binary save for feature_split as the rest are
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:10: Missing $ inserted.
+<inserted text> 
+                $
+l.10 #upon the return of DT_
+                            train_binary save for feature_split as the rest are
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 10.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 10.
+./WriteUp.tex:11: You can't use `macro parameter character #' in math mode.
+l.11 #
+      only needed during training. In addition to this, the two node classes
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:12: You can't use `macro parameter character #' in math mode.
+l.12 #
+      also have a label prediction. The real node class has some additional ...
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:13: You can't use `macro parameter character #' in math mode.
+l.13 #
+      as the feature list is now much larger and differentiated based on
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+./WriteUp.tex:14: Missing $ inserted.
+<inserted text> 
+                $
+l.14 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (737.0494pt too wide) in paragraph at lines 3--14
+\OT1/cmr/m/n/10 DT$[]\OML/cmm/m/it/10 rain[]inarysaveforfeature[]plitastheresta
+reonlyneededduringtraining:Inadditiontothis; thetwonodeclassesalsohavealabelpre
+diction:Therealnodeclasshassomeadditionalstructureasthefeaturelistisnowmuchlarg
+eranddifferentiatedbasedon$ 
+ []
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+(/home/polymathykhan/Documents/PycharmProjects/CS491Proj1/out/WriteUp.aux) ) 
+Here is how much of TeX's memory you used:
+ 202 strings out of 494923
+ 2462 string characters out of 6180743
+ 49045 words of memory out of 5000000
+ 3605 multiletter control sequences out of 15000+600000
+ 3640 words of font info for 14 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 23i,4n,17p,131b,107s stack positions out of 5000i,500n,10000p,200000b,80000s
+</u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+Output written on /home/polymathykhan/Documents/PycharmProjects/CS491Proj1/out/
+WriteUp.pdf (1 page, 36775 bytes).
+PDF statistics:
+ 20 PDF objects out of 1000 (max. 8388607)
+ 13 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

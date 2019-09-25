@@ -1,0 +1,16 @@
+\documentclass{article}
+\begin{document}
+    These classes will form the basis for our tree. Clearly, we need to denote
+left and right children of each node in the tree, but we also need to
+keep track of which samples are "in" each node during the model's training
+so that we can form output labels and see what is going on during the debugging
+process. Further, we need to make sure during training we do not split on
+the same feature twice so we will keep track of un-split features as well
+as which feature we choose to split on. These properties will all be None
+upon the return of DT_train_binary save for feature_split as the rest are
+only needed during training. In addition to this, the two node classes
+also have a label prediction. The real node class has some additional structure
+as the feature list is now much larger (we can split our tree on any inequality
+on any feature), hence the need for feature_split, feature_value, and feature_sign.
+
+\end{document}
