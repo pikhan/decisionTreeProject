@@ -16,7 +16,9 @@ import numpy as np
 #the same feature twice so we will keep track of un-split features as well
 #as which feature we choose to split on. These properties will all be None
 #upon the return of DT_train_binary save for feature_split as the rest are
-#only needed during training.
+#only needed during training. In addition to this, the two node classes
+#also have a label prediction. The real node class has some additional structure
+#as the feature list is now much larger and differentiated based on
 
 class BinaryNode(object):
     def __init__(self):
@@ -33,7 +35,7 @@ class RealNode(object):
         self.right_child = None
         self.samples = None
         self.feature_list = None
-        self.feature_split = None
+        self.feature_split = None #particular feature index
         self.feature_split_value = None
         self.feature_split_sign = None #either "<" or "<="
         self.label_prediction = None
@@ -85,7 +87,7 @@ def DT_test_binary(X = None, Y = None, DT = None):
             for labels in Y:
                 if Y[labels] == DT.label_prediction:
                     accuracy+1
-            return (accuracy/range(Y))
+            return (accuracy/len(Y))
         else:
             Xleft = np.array
             Yleft = np.array
@@ -149,7 +151,7 @@ def DT_test_real(X = None, Y = None, DT = None):
             for labels in Y:
                 if Y[labels] == DT.label_prediction:
                     accuracy+1
-            return (accuracy/range(Y))
+            return (accuracy/len(Y))
         else: 
             Xleft = np.array
             Yleft = np.array
