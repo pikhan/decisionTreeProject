@@ -17,7 +17,7 @@ class BinaryNode(object):
         self.label_prediction = 0.0 #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
 
 class RealNode(object):
-    def __init__(self, left_child, right_child, parent, samples, feature_list, feature_split, feature_split_value, feature_split_sign, label_prediction):
+    def __init__(self):
         self.left_child = None #the left child of the node, another node
         self.right_child = None #the right child of the node, another node
         self.parent = None #the parent node
@@ -370,11 +370,11 @@ def DT_make_prediction(x, DT): #assumes DT is binary (I believe this is correct)
         return DT_make_prediction(x, DT.right_child)
 
 
-def DT_train_real(X, Y, max_depth = -2):
+def DT_train_real(X, Y, max_depth = -1):
     root = None
     if X is None: 
         return root
-    root = BinaryNode()
+    root = RealNode()
     root.samples = X
     root.feature_list = np.arange(len(X[0]), dtype=int)
      
@@ -385,11 +385,11 @@ def DT_train_real(X, Y, max_depth = -2):
     curr_IG = 0.0
     best_index = 0
     avg_yes = 0.0
-    for feature in range(len(X[0])):
+    for feature in range(len(X[0]) -1):
         avg_yes_curr = 0.0
         if (feature in root.feature_list) == True:
             for sample in range(len(X)):
-                if X[sample][feature] == 0:
+                if X[sample][feature] > X[sample][feature+1]:
                     if left_IG is None:
                         left_IG = np.vstack([Y[sample]])
                     else:
@@ -414,13 +414,12 @@ def DT_train_real(X, Y, max_depth = -2):
             avg_yes +=1
 
     root.label_prediction = avg_yes / len(Y)
-    if root.label_prediction <=0.5:
+    if root.label_prediction < 0.5:
         root.label_prediction = 0
     else:
         root.label_prediction = 1
 
     if best_IG == -1.0:
-        root = None
         return root
 
     root.feature_split = best_index
@@ -428,18 +427,21 @@ def DT_train_real(X, Y, max_depth = -2):
         return root
     max_depth -= 1
 
-    left_child = BinaryNode()
+    left_child = RealNode()
     left_child.parent = root
-    right_child = BinaryNode()
+    right_child = RealNode()
     right_child.parent = root
+
+    root.left_child = left_child
+    root.right_child = right_child
     
     Xleft = None
     Xright = None
     Yleft = None
     Yright = None
 
-    for sample in range(len(X)):
-        if X[sample][best_index] == 0:
+    for sample in range(len(X) - 1):
+        if X[sample][best_index] > X[sample+1][best_index]:
             if Xleft is None:
                 Xleft = np.vstack([X[sample]])
                 Yleft = np.vstack([Y[sample]])
@@ -453,10 +455,15 @@ def DT_train_real(X, Y, max_depth = -2):
             else:
                 Xright = np.vstack([Xright, X[sample]])
                 Yright = np.vstack([Yright, Y[sample]])
-    feature_list = np.delete(root.feature_list, best_index)
-
-    DT_train_real_aux(left_child, Xleft, Yleft, feature_list, max_depth)
-    DT_train_real_aux(right_child, Xright, Yright, feature_list, max_depth)
+    remove_index = 0
+    for i in range(len(root.feature_list)):
+        if root.feature_list[i] == best_index:
+            remove_index = i
+    feature_list = np.delete(root.feature_list, remove_index)
+    if Xleft is not None:
+        DT_train_real_aux(left_child, Xleft, Yleft, feature_list, max_depth)
+    if Xright is not None:
+        DT_train_real_aux(right_child, Xright, Yright, feature_list, max_depth)
 
     return root
 
@@ -475,11 +482,11 @@ def DT_train_real_aux(root, X, Y, feature_list, max_depth = -1):
     best_index = 0
     avg_yes = 0.0
     
-    for feature in range(len(X[0])):
+    for feature in range(len(X[0]) - 1):
         avg_yes_curr = 0.0
         if (feature in root.feature_list) == True:
-            for sample in range(len(X)):
-                if X[sample][feature] == 0:
+            for sample in range(len(X) - 1):
+                if X[sample][feature] > X[sample+1][best_index]:
                     if left_IG is None:
                         left_IG = np.vstack([Y[sample]])
                     else:
@@ -496,13 +503,12 @@ def DT_train_real_aux(root, X, Y, feature_list, max_depth = -1):
                 avg_yes = avg_yes_curr
                 best_IG = curr_IG
                 best_index = feature
-
+    #print(best_IG)
     for label in range(len(Y)):
         if Y[label][0] == 1:
             avg_yes +=1
-
     root.label_prediction = avg_yes / len(Y)
-    if root.label_prediction <=0.5:
+    if root.label_prediction < 0.5:
         root.label_prediction = 0
     else:
         root.label_prediction = 1
@@ -519,18 +525,21 @@ def DT_train_real_aux(root, X, Y, feature_list, max_depth = -1):
         return root
     max_depth -= 1
 
-    left_child = BinaryNode()
+    left_child = RealNode()
     left_child.parent = root
-    right_child = BinaryNode()
+    right_child = RealNode()
     right_child.parent = root
+
+    root.left_child = left_child
+    root.right_child = right_child
     
     Xleft = None
     Xright = None
     Yleft = None
     Yright = None
 
-    for sample in range(len(X)):
-        if X[sample][best_index] == 0:
+    for sample in range(len(X) - 1):
+        if X[sample][best_index] > X[sample+1][best_index]:
             if Xleft is None:
                 Xleft = np.vstack([X[sample]])
                 Yleft = np.vstack([X[sample]])
@@ -544,16 +553,27 @@ def DT_train_real_aux(root, X, Y, feature_list, max_depth = -1):
             else:
                 Xright = np.vstack([Xright, X[sample]])
                 Yright = np.vstack([Yright, Y[sample]])
-    if len(feature_list) == 1: #no idea
+    if len(feature_list) == 0: 
         return root
-    feature_list = np.delete(root.feature_list, best_index)
+    
+    remove_index = 0
+    for i in range(len(feature_list)):
+        if feature_list[i] == best_index:
+            remove_index = i
+    feature_list = np.delete(root.feature_list, remove_index)
 
-    DT_train_real_aux(left_child, Xleft, Yleft, feature_list, max_depth)
-    DT_train_real_aux(right_child, Xright, Yright, feature_list, max_depth)
+    if Xleft is not None:
+        DT_train_real_aux(left_child, Xleft, Yleft, feature_list, max_depth)
+    if Xright is not None:
+        DT_train_real_aux(right_child, Xright, Yright, feature_list, max_depth)
 
     return root
 
 def DT_test_real(X, Y, DT):
+    return DT_test_real_aux(X, Y, DT)/ len(Y)
+def DT_test_real_aux(X, Y, DT):
+    if (X is None) or (Y is None):
+        return 0
     if DT is not None:
         if (DT.left_child is None) and (DT.right_child) is None:
             accuracy = 0.0;
@@ -561,58 +581,41 @@ def DT_test_real(X, Y, DT):
                 if Y[labels][0] == DT.label_prediction:
                     accuracy+=1
             if DT.parent is None:
-                return accuracy / len(DT.samples)
+                return accuracy
             else:
-                return accuracy / len((DT.parent).samples)
+                return accuracy
         else: 
             Xleft = None
             Yleft = None
             Xright = None               #fixed
             Yright = None
             for sample in range(len(X)):
-                if DT.feature_split_sign == "<":
-                    if X[sample][DT.feature_split] >= DT.feature_split_value: 
-                        if Xleft or Yleft is None:
-                            Xleft = np.vstack([X[sample]])
-                            Yleft = np.vstack([Y[sample]])
-                        else:
-                            Xleft = np.vstack([Xleft, X[sample]])
-                            Yleft = np.vstack([Yleft, Y[sample]])
+                if X[sample][DT.feature_split] > DT.feature_split_value: 
+                    if Xleft is None:
+                        Xleft = np.vstack([X[sample]])
+                        Yleft = np.vstack([Y[sample]])
                     else:
-                        if Xright or Yright is None:
-                            Xright = np.vstack([X[sample]])
-                            Yright = np.vstack([Y[sample]])
-                        else:
-                            Xright = np.vstack([Xright, X[sample]])
-                            Yright = np.vstack([Yright, Y[sample]])
+                        Xleft = np.vstack([Xleft, X[sample]])
+                        Yleft = np.vstack([Yleft, Y[sample]])
                 else:
-                    if X[sample][DT.feature_split] > DT.feature_split_value: 
-                        if Xleft or Yleft is None:
-                            Xleft = np.vstack([X[sample]])
-                            Yleft = np.vstack([Y[sample]])
-                        else:
-                            Xleft = np.vstack([Xleft, X[sample]])
-                            Yleft = np.vstack([Yleft, Y[sample]])
+                    if Xright is None:
+                        Xright = np.vstack([X[sample]])
+                        Yright = np.vstack([Y[sample]])
                     else:
-                        if Xright or Yright is None:
-                            Xright = np.vstack([X[sample]])
-                            Yright = np.vstack([Y[sample]])
-                        else:
-                            Xright = np.vstack([Xright, X[sample]])
-                            Yright = np.vstack([Yright, Y[sample]])
+                        Xright = np.vstack([Xright, X[sample]])
+                        Yright = np.vstack([Yright, Y[sample]])
 
-            return DT_test_real(Xleft, Yleft, DT.left_child) + DT_test_real(Xright, Yright, DT.right_child)
-    else:
-        return 0.0
+            acc_total = DT_test_real_aux(Xleft, Yleft, DT.left_child) + DT_test_real_aux(Xright, Yright, DT.right_child)
+            return acc_total
 
 def DT_train_real_best(X_train, Y_train, X_val, Y_val):
     DT_best = DT_train_real(X_train, Y_train, -1)
     acc_best = DT_test_real(X_val, Y_val, DT_best)
-    depth = maxDepth(DT_best)
-
+    depth = maxDepth(DT_best) - 1 
     for x in range(depth):
         DT_curr = DT_train_real(X_train, Y_train, x)
         acc_curr = DT_test_real(X_val, Y_val, DT_curr)
+        #print(acc_curr)
         if acc_curr >= acc_best:
             acc_best = acc_curr
             DT_best = DT_curr
