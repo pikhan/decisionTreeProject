@@ -77,7 +77,6 @@ def information_gain(DT = None, Y = None, leftLabels = None, rightLabels = None)
     informationGain = H_current - proportionLeft*H_left - proportionRight*H_right #compute our information gain
     return informationGain
 
-def label_prediction(list_of_samples = None):
 
 
 #This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the binary case
@@ -132,15 +131,45 @@ def best_split_binary(DT = None, Y = None, X = None):
 #This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the real case
 
 def best_split_real(DT = None, Y = None):
+    print('Test function')
 
-def DT_train_binary(X = None, Y = None, max_depth = -2):
+
+def recursor(DT = None, Y = None, X = None, iter = 0):
+    if iter == 0:
+        return 0
+    else:
+        best_split_binary(DT, Y, X)
+        return recursor(DT.left_child, Y, X, (iter - 1)) + recursor(DT.right_child, Y, X, (iter - 1))
+
+
+
+def recursor_indefinite(DT = None, Y = None, X = None):
+    if (DT.feature_list).size == 0:
+        return 0
+    best_split_binary(DT, Y, X)
+    return recursor_indefinite(DT.left_child, Y, X) + recursor(DT.right_child, Y, X)
+
+
+def DT_train_binary(X = None, Y = None, max_depth = -1):
     if max_depth <= -2:
         print('\n Please enter a correct max_depth integer \n')
     if X is None:
         print('\n The X 2D Array is empty. \n')
     if Y is None:
         print('\n The Y 2D Array is empty. \n')
-
+    adder = 0
+    for i in range(len(Y)):
+        adder += Y[i][0]
+    label_prediction = np.floor(adder/len(Y))
+    root = BinaryNode(None, None, None, np.arrange(len(Y)), np.arrange(len(Y)), None, label_prediction)
+    if max_depth == -1:
+        recursor_indefinite(root, Y, X)
+        return root
+    if max_depth == 0:
+        return root
+    if max_depth > 0:
+        recursor(root, Y, X, max_depth)
+        return root
 
 
 def DT_test_binary(X = None, Y = None, DT = None):
