@@ -161,7 +161,7 @@ def DT_train_binary(X = None, Y = None, max_depth = -1):
     for i in range(len(Y)):
         adder += Y[i][0]
     label_prediction = np.floor(adder/len(Y))
-    root = BinaryNode(None, None, None, np.arrange(len(Y)), np.arrange(len(Y)), None, label_prediction)
+    root = BinaryNode(None, None, None, np.arange(len(Y)), np.arange(len(Y)), None, label_prediction)
     if max_depth == -1:
         recursor_indefinite(root, Y, X)
         return root
