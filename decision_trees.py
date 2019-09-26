@@ -22,7 +22,7 @@ class RealNode(object):
         self.right_child = None #the right child of the node, another node
         self.parent = None #the parent node
         self.samples = None #a 1D integer array of training sample indices "in" the node
-        self.feature_list = None #a 3D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
+        self.feature_list = None #a 2D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
         self.feature_split = None #an integer, the feature index for which we split on at the node
         self.feature_split_value = None #a double, the value for which we split the feature on
         self.feature_split_sign = None #a string, less or leq resp. corresponding to either "<" or "<=", for which we split the feature value with
@@ -69,10 +69,6 @@ def information_gain(DT = None, Y = None, leftLabels = None, rightLabels = None)
     currentLabels = np.empty(shape=(len(DT.samples),1)) #A 0-filled np array having as many rows as the samples in DT and only 1 column to create a label subset
     for i in range(len((DT.parent).samples)):
         currentLabels[i][0] = Y[DT.samples[i]][0] #this creates our label subset from the global Y-label subset
-    #for i in range(len((DT.left_child).samples)):
-     #   leftLabels[i][0] = Y[(DT.left_child).samples[i]][0]
-    #for i in range(len((DT.right_child).samples)):
-    #    rightLabels[i][0] = Y[(DT.right_child).samples[i]][0]
     H_current = entropy(currentLabels) #we first compute our entropies
     H_left = entropy(leftLabels)
     H_right = entropy(rightLabels)
@@ -81,20 +77,44 @@ def information_gain(DT = None, Y = None, leftLabels = None, rightLabels = None)
     informationGain = H_current - proportionLeft*H_left - proportionRight*H_right #compute our information gain
     return informationGain
 
+def label_prediction(list_of_samples = None):
 
 
 #This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the binary case
 
 def best_split_binary(DT = None, Y = None, X = None):
     info_gain_list = [] #this is a list of information gain values
-    leftLabels = np.empty(shape=(len((DT.left_child).samples),1))
-    rightLabels = np.empty(shape=(len((DT.right_child).samples),1))
+    left_samples_list = [] #this will be a list of lists, where each internal list corresponds to the list of samples in the left for some i-th feature
+    right_samples_list =[] #this will be a list of lists, where each internal list corresponds to the list of samples in the right for some i-th feature
+    leftLabels = [] #this will be a list of lists, where each internal list corresponds to the list of labels for each sample in left_samples_list at each i-th feature
+    rightLabels = []#this will be a list of lists, where each internal list corresponds to the list of labels for each sample in right_samples_list at each i-th feature
     for i in range(len(DT.feature_list)):
+        left_samples_list.append([])
+        right_samples_list.append([])
+        leftLabels.append([])
+        rightLabels.append([])
         for j in range(len(DT.samples)):
             if X[j][i] == 0:
-
-    left_child = BinaryNode(None, None, DT, left_samples, new_feature_list, None, left_label_prediction)
-    right_child = BinaryNode(None, None, DT, right_samples, new_feature_list, None, right_label_prediction)
+                left_samples_list[i].append(j)
+                leftLabels[i].append(Y[j][0])
+            else:
+                right_samples_list[i].append(j)
+                rightLabels.append(Y[j][0])
+    for k in range(len(DT.feature_list)):
+        leftLabels_resized = np.empty(shape=(len(leftLabels[k]),1))
+        for l in range(len(leftLabels[k])):
+            leftLabels_resized[l][0] = leftLabels[k][l]
+        rightLabels_resized = np.empty(shape=(len(rightLabels[k]),1))
+        for l in range(len(rightLabels[k])):
+            rightLabels_resized[l][0] = rightLabels[k][l]
+        info_gain_list.append(information_gain(DT, Y, leftLabels_resized, rightLabels_resized))
+    info_gain_array = np.asarray(info_gain_list)
+    DT.feature_split = DT.feature_list[np.argmax(info_gain_array)]
+    lSamples = np.asarray(left_samples_list[np.argmax(info_gain_array)])
+    rSamples = np.asarray(right_samples_list[np.argmax(info_gain_array)])
+    new_feature_list = np.delete(DT.feature_list, np.argmax(info_gain_array))
+    left_child = BinaryNode(None, None, DT, lSamples, new_feature_list, None, left_label_prediction)
+    right_child = BinaryNode(None, None, DT, rSamples, new_feature_list, None, right_label_prediction)
     DT.left_child = left_child
     DT.right_child = right_child
 
