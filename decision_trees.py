@@ -7,26 +7,26 @@
 import numpy as np
 
 class BinaryNode(object):
-    def __init__(self):
+    def __init__(self, left_child, right_child, parent, samples, feature_list, feature_split, label_prediction):
         self.left_child = None #the left child of the node, another node
         self.right_child = None #the right child of the node, another node
         self.parent = None #the parent node
-        self.samples = None #a 1D integer array of training sample indices "in" the node
-        self.feature_list = None #a 1D integer array of features we have not yet split upon on the branch
-        self.feature_split = None #an integer, the feature index for which we split on at the node
-        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
+        self.samples = np.arange(5) #a 1D integer array of training sample indices "in" the node
+        self.feature_list = np.arange(5) #a 1D integer array of features we have not yet split upon on the branch
+        self.feature_split = 0 #an integer, the feature index for which we split on at the node
+        self.label_prediction = 0 #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
 
 class RealNode(object):
-    def __init__(self):
+    def __init__(self, left_child, right_child, parent, samples, feature_list, feature_split, feature_split_value, feature_split_sign, label_prediction):
         self.left_child = None #the left child of the node, another node
         self.right_child = None #the right child of the node, another node
         self.parent = None #the parent node
-        self.samples = None #a 1D integer array of training sample indices "in" the node
-        self.feature_list = None #a 2D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
-        self.feature_split = None #an integer, the feature index for which we split on at the node
-        self.feature_split_value = None #a double, the value for which we split the feature on
-        self.feature_split_sign = None #a string, less or leq resp. corresponding to either "<" or "<=", for which we split the feature value with
-        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
+        self.samples = np.arange(5) #a 1D integer array of training sample indices "in" the node
+        self.feature_list = np.zeros(shape =(5,5)) #a 2D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
+        self.feature_split = 0 #an integer, the feature index for which we split on at the node
+        self.feature_split_value = 0 #a double, the value for which we split the feature on
+        self.feature_split_sign = "less" #a string, less or leq resp. corresponding to either "<" or "<=", for which we split the feature value with
+        self.label_prediction = 0 #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
 
 
 #This is a modular function that will calculate the sum of a list of arguments.
@@ -44,7 +44,7 @@ def sigma(*args):
 
 #This is a modular function that will calculate the entropy of the whole data set
 
-def entropy(Y = None):
+def entropy(Y):
     if Y is None:
         print('\n The label set input is None, please correct. \n')
     count_yes = 0
@@ -65,7 +65,7 @@ def entropy(Y = None):
 
 #This is a modular function that will compute the information gain between some current DT node and its children given the current node, the global Y 2D numpy array, and hypothetical left/right labels
 
-def information_gain(DT = None, Y = None, leftLabels = None, rightLabels = None):
+def information_gain(DT, Y, leftLabels, rightLabels):
     currentLabels = np.empty(shape=(len(DT.samples),1)) #A 0-filled np array having as many rows as the samples in DT and only 1 column to create a label subset
     for i in range(len((DT.parent).samples)):
         currentLabels[i][0] = Y[DT.samples[i]][0] #this creates our label subset from the global Y-label subset
@@ -81,7 +81,7 @@ def information_gain(DT = None, Y = None, leftLabels = None, rightLabels = None)
 
 #This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the binary case
 
-def best_split_binary(DT = None, Y = None, X = None):
+def best_split_binary(DT, Y, X):
     info_gain_list = [] #this is a list of information gain values
     left_samples_list = [] #this will be a list of lists, where each internal list corresponds to the list of samples in the left for some i-th feature
     right_samples_list =[] #this will be a list of lists, where each internal list corresponds to the list of samples in the right for some i-th feature
@@ -130,11 +130,11 @@ def best_split_binary(DT = None, Y = None, X = None):
 
 #This is a modular function that will compute the best possible feature_split the algorithm should make by maximizing the information gain in the real case
 
-def best_split_real(DT = None, Y = None):
+def best_split_real(DT, Y):
     print('Test function')
 
 
-def recursor(DT = None, Y = None, X = None, iter = 0):
+def recursor(DT, Y, X, iter = 0):
     if iter == 0:
         return 0
     else:
@@ -143,14 +143,14 @@ def recursor(DT = None, Y = None, X = None, iter = 0):
 
 
 
-def recursor_indefinite(DT = None, Y = None, X = None):
+def recursor_indefinite(DT, Y, X):
     if (DT.feature_list).size == 0:
         return 0
     best_split_binary(DT, Y, X)
     return recursor_indefinite(DT.left_child, Y, X) + recursor(DT.right_child, Y, X)
 
 
-def DT_train_binary(X = None, Y = None, max_depth = -1):
+def DT_train_binary(X, Y, max_depth = -1):
     if max_depth <= -2:
         print('\n Please enter a correct max_depth integer \n')
     if X is None:
@@ -161,7 +161,7 @@ def DT_train_binary(X = None, Y = None, max_depth = -1):
     for i in range(len(Y)):
         adder += Y[i][0]
     label_prediction = np.floor(adder/len(Y))
-    root = BinaryNode(None, None, None, np.arange(len(Y)), np.arange(len(Y)), None, label_prediction)
+    root = BinaryNode(None, None, None, np.arange(len(Y)), np.arange(len(X[0])), None, label_prediction)
     if max_depth == -1:
         recursor_indefinite(root, Y, X)
         return root
@@ -172,7 +172,7 @@ def DT_train_binary(X = None, Y = None, max_depth = -1):
         return root
 
 
-def DT_test_binary(X = None, Y = None, DT = None):
+def DT_test_binary(X, Y, DT):
     if X is None:
         print('\n The X 2D Array is empty. \n')
     if Y is None:
@@ -209,7 +209,7 @@ def DT_test_binary(X = None, Y = None, DT = None):
     else:
         return 0
 
-def maxDepth(DT = None):
+def maxDepth(DT):
     if DT is None:
         return 0 ;  
     else : 
@@ -222,7 +222,7 @@ def maxDepth(DT = None):
         else: 
             return rDepth+1
 
-def DT_train_binary_best(X_train = None, Y_train = None, X_val = None, Y_val = None):
+def DT_train_binary_best(X_train, Y_train, X_val, Y_val):
     DT_best = DT_train_binary(X_train, Y_train, -1)
     acc_best = DT_test_binary(X_val, Y_val, DT_best)
     depth = maxDepth(DT_best)
@@ -238,7 +238,7 @@ def DT_train_binary_best(X_train = None, Y_train = None, X_val = None, Y_val = N
 
 
 
-def DT_make_prediction(x = None, DT = None): #assumes DT is binary (I believe this is correct)
+def DT_make_prediction(x, DT): #assumes DT is binary (I believe this is correct)
     if (DT.left_child is None) and (DT.right_child is None):
         return DT.label_prediction
     if x is None:
@@ -248,11 +248,11 @@ def DT_make_prediction(x = None, DT = None): #assumes DT is binary (I believe th
     else:
         return DT_make_prediction(x, DT.right_child)
 
-def DT_train_real(X = None, Y = None, max_depth = -2):
+def DT_train_real(X, Y, max_depth = -2):
     if max_depth <= -2:
         print('\n Please enter a correct max_depth integer \n')
 
-def DT_test_real(X = None, Y = None, DT = None):
+def DT_test_real(X, Y, DT):
     if X is None:
         print('\n The X 2D Array is empty. \n')
     if Y is None:
@@ -303,7 +303,7 @@ def DT_test_real(X = None, Y = None, DT = None):
 
             return DT_test_real(Xleft, Yleft, DT.left_child) + DT_test_real(Xright, Yright, DT.right_child)
 
-def DT_train_real_best(X_train = None, Y_train = None, X_val = None, Y_val = None):
+def DT_train_real_best(X_train, Y_train, X_val, Y_val):
     DT_best = DT_train_real(X_train, Y_train, -1)
     acc_best = DT_test_real(X_val, Y_val, DT_best)
     depth = maxDepth(DT_best)
