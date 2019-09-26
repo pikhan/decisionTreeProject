@@ -32,40 +32,26 @@
 \lstset{style=mystyle}
 
 \begin{document}
-
-\begin{lstlisting}[language=Python, caption=Python example]
-    class BinaryNode(object):
-    def __init__(self):
-        self.left_child = None #the left child of the node, another node
-        self.right_child = None #the right child of the node, another node
-        self.samples = None #a 1D integer array of training sample indices "in" the node
-        self.feature_list = None #a 1D integer array of features we have not yet split upon on the branch
-        self.feature_split = None #an integer, the feature index for which we split on at the node
-        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
-
-class RealNode(object):
-    def __init__(self):
-        self.left_child = None #the left child of the node, another node
-        self.right_child = None #the right child of the node, another node
-        self.samples = None #a 1D integer array of training sample indices "in" the node
-        self.feature_list = None #a 3D array of triples (feature_index, feature_value, feature_sign) for which we have not yet split upon on the branch
-        self.feature_split = None #an integer, the feature index f3or which we split on at the node
-        self.feature_split_value = None #a double, the value for which we split the feature on
-        self.feature_split_sign = None #a string, less or leq resp. corresponding to either "<" or "<=", for which we split the feature value with
-        self.label_prediction = None #an integer, 1 for yes, 0 for no the label prediction our DT will output at the particular node
-\end{lstlisting}
-
-    These classes will form the basis for our tree. Clearly, we need to denote
-left and right children of each node in the tree, but we also need to
-keep track of which samples are "in" each node during the model's training
-so that we can form output labels and see what is going on during the debugging
-process. Further, we need to make sure during training we do not split on
-the same feature twice so we will keep track of un-split features as well
-as which feature we choose to split on. These properties will all be None
-upon the return of DT_train_binary save for feature_split as the rest are
-only needed during training. In addition to this, the two node classes
-also have a label prediction. The real node class has some additional structure
-as the feature list is now much larger (we can split our tree on any inequality
-on any feature), hence the need for feature_split, feature_value, and feature_sign.
-
+    \title{Write-Up}
+    \author{Ibraheem Khan and Matthew Alighchi}
+    \maketitle
+\section{DT\_train\_binary Implementation Details}
+    \par DT\_train\_binary takes in our globally available X and Y along with some max-depth and returns a binary tree of said depth based on the information gain algorithm. It does so by splitting on three
+cases: the case where max\_depth is 0, -1, and greater than 0. For the case of having max\_depth being 0 it simply returns a binary tree having a single node whose label\_prediction is just the average
+of the label set. For the case of max\_depth being greater than 0, it recursively runs best\_split\_binary which computes the best feature to split on at the given node and then generate children nodes based
+on the best split. When max\_depth is -1 it does something similar but instead recurses not until some specified number of times but rather recurses indefinitely until the feature list (which is the set
+of features for which we have not yet split on) expires.
+    \par Now, best\_split\_binary works by first creating various lists and lists of lists for all the data and organizes them based on some hypothetical feature split. That is, given some node, it supposes
+what if the node were to split its data on some feature, then places the would-be data in its left and right "children." It doesn't physically do this, but pretends to do this via the aforementioned lists and
+lists of lists. This way, for example, the label set is organized in a list of lists such the first list in the leftLabels is the label set of the left node should the algorithm split on the first feature in
+the feature list. Following this reorganization of our data, the function computes our information gain, puts them into a similarly organized list, converts that into a numpy array, and finds the argmax. This
+argmax tells us correspondingly what index in the feature list is the best feature to split on. Finally, this function creates the two children nodes based upon this optimal split.
+    \par The information gain function works by relying on the entropy function which is a standard implementation of the mathematical formula for entropy. The information gain implementation, too, is standard
+conversion from math to code, however we test edge cases for when our code may not work. For example, if our label sets are empty then our information gain must be 0.
+\section{DT\_test\_binary Implemenation Details}
+\section{DT\_train\_binary\_best Implementation Details}
+\section{Testing DT\_train\_binary, DT\_test\_binary, and DT\_train\_binary\_best}
+\section{A Forest of Decision Trees}
+\section{DT\_train\_real, DT\_test\_real, DT\_train\_real\_best Implementations}
+\section{Testing DT\_train\_real}
 \end{document}
