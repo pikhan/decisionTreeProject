@@ -113,6 +113,14 @@ def best_split_binary(DT = None, Y = None, X = None):
     lSamples = np.asarray(left_samples_list[np.argmax(info_gain_array)])
     rSamples = np.asarray(right_samples_list[np.argmax(info_gain_array)])
     new_feature_list = np.delete(DT.feature_list, np.argmax(info_gain_array))
+    adder = 0
+    addertwo = 0
+    for m in range(len(lSamples)):
+        adder += Y[lSamples[m]][0]
+    left_label_prediction = np.floor(adder/len(lSamples))
+    for n in range(len(rSamples)):
+        addertwo += Y[rSamples[m]][0]
+    right_label_prediction = np.floor(adder/len(rSamples))
     left_child = BinaryNode(None, None, DT, lSamples, new_feature_list, None, left_label_prediction)
     right_child = BinaryNode(None, None, DT, rSamples, new_feature_list, None, right_label_prediction)
     DT.left_child = left_child
