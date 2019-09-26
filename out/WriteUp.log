@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.3)  26 SEP 2019 00:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.3)  26 SEP 2019 15:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -429,33 +429,37 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 37.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 37.
+ [1
 
-Overfull \hbox (11.74023pt too wide) in paragraph at lines 55--55
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+(/home/polymathykhan/texmf/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+) [2]
+Overfull \hbox (11.74023pt too wide) in paragraph at lines 99--99
 []\OT1/cmr/bx/n/14.4 DT[]train[]real, DT[]test[]real, DT[]train[]real[]best
  []
 
-[1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-(/home/polymathykhan/Documents/PycharmProjects/CS491Proj1/out/WriteUp.aux) ) 
+[3] (/home/polymathykhan/Documents/PycharmProjects/CS491Proj1/out/WriteUp.aux) 
+) 
 Here is how much of TeX's memory you used:
- 2833 strings out of 494923
- 36057 string characters out of 6180743
- 95226 words of memory out of 5000000
- 6176 multiletter control sequences out of 15000+600000
- 7280 words of font info for 26 fonts, out of 8000000 for 9000
+ 3296 strings out of 494923
+ 40326 string characters out of 6180743
+ 178140 words of memory out of 5000000
+ 6633 multiletter control sequences out of 15000+600000
+ 7616 words of font info for 28 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 26i,6n,35p,240b,219s stack positions out of 5000i,500n,10000p,200000b,80000s
-</u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+ 26i,6n,42p,273b,1679s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmtt8.pfb>
 Output written on /home/polymathykhan/Documents/PycharmProjects/CS491Proj1/out/
-WriteUp.pdf (2 pages, 55447 bytes).
+WriteUp.pdf (3 pages, 79856 bytes).
 PDF statistics:
- 27 PDF objects out of 1000 (max. 8388607)
- 18 compressed objects within 1 object stream
+ 38 PDF objects out of 1000 (max. 8388607)
+ 26 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
