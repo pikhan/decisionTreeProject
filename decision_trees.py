@@ -1,6 +1,4 @@
 # Ibraheem Khan and Matthew Alighchi
-# CS 491: Project 1 - Decision Trees
-# Emily Hand - UNR
 
 #Numpy is imported for log functions
 
